@@ -1,0 +1,47 @@
+<div class="container">
+  <h2>Lista de Tarefas</h2>
+  
+  <div class="contadores" *ngIf="tarefas.length > 0">
+    <p>
+      <strong>Total:</strong> {{ totalTarefas }} | 
+      <strong>Concluídas:</strong> {{ concluidas }} | 
+      <strong>Pendentes:</strong> {{ pendentes }}
+    </p>
+  </div>
+
+  <div *ngIf="tarefas.length === 0; else listaTemplate">
+    <p>Nenhuma tarefa cadastrada</p>
+  </div>
+
+  <ng-template #listaTemplate>
+    <ul>
+      <li *ngFor="let t of tarefas" 
+          [ngStyle]="{
+            'color': t.removida ? 'red' : 'blue',
+            'text-decoration': t.concluida ? 'underline' : 'none'
+          }">
+        
+        <span>{{ t.descricao }} (Prazo: {{ t.prazoConclusao }})</span>
+        
+        <div class="acoes">
+          <button 
+            style="background-color: orange; color: white;" 
+            (click)="removerTarefa(t.id)" 
+            [disabled]="t.removida">
+            Remover
+          </button>
+          
+          <button 
+            style="background-color: green; color: white;" 
+            (click)="concluirTarefa(t.id)" 
+            [disabled]="t.concluida || t.removida">
+            Concluir
+          </button>
+        </div>
+      </li>
+    </ul>
+  </ng-template>
+
+  <br>
+  <a routerLink="/cadastro">Voltar ao Cadastro</a>
+</div>
